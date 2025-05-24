@@ -1,0 +1,7 @@
+FROM ubuntu:22.04
+
+ARG http_tmp 
+ARG https_tmp
+
+ENV http_proxy=$http_tmp
+ENV https_proxy=$https_tmp

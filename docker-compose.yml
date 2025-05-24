@@ -1,0 +1,51 @@
+services:
+  gpusample:
+    container_name: gpusample
+    image: gpusample:latest
+    build:
+      context: containers/gpu_sample
+      dockerfile: dockerfile
+      args:
+        - http_tmp=$http_proxy
+        - https_tmp=$https_proxy
+    env_file:
+      - .env
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    command: tail -f /dev/null
+    # ports:
+    #  - 80:80
+
+    # Linux用GPU設定
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+
+    # Windows用GPU設定
+    # runtime: nvidia
+
+    # core dumpを防ぐ為の設定
+    shm_size: 8GB
+
+
+
+  normalsample:
+    container_name: normalsample
+    image: normalsample:lates
+    build:
+      context: containers/normal_sample
+      dockerfile: dockerfile
+      args: 
+        - http_tmp=$http_proxy
+        - https_tmp=$https_proxy
+    env_file:
+      - .env
+    volumes:
+      - ./:/workspace
+    working_dir: /workspace
+    command: tail -f /dev/null
+    # ports:
+    #  - 80:80
